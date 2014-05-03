@@ -1,25 +1,27 @@
-=== Plugin Name ===
+=== Email as Username for WP-Members ===
 Contributors: stevish
-Donate link: http://example.com/
-Tags: email as username, users,
+Donate link: http://ntm.org/give
+Tags: email as username, users
 Requires at least: 3.5
 Tested up to: 3.9
 Stable tag: 1.0
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Removes the need to create a username (if wp-members is in use). Changes/removes appropriate items from forms, and sets the email as the username.
+Requires WP-Members to be in use. Uses members' emails as their usernames. Removes the need to create a username (if wp-members is in use).
 
 == Description ==
 
-Removes the need to create a username (if wp-members is in use). Changes or removes appropriate items from forms, and adds the email address as the username. If WP-Members is no longer in use, there are plenty of plugins that offer this capability for WP's native registration and login functions.
+Requires WP-Members to be in use. Uses members' emails as their usernames. Removes the need to create a username (if wp-members is in use). Changes or removes appropriate items from forms, and adds the email address as the username. If WP-Members is no longer in use, there are plenty of plugins that offer this capability for WP's native registration and login functions
 
+**How it works:**
+This plugin doesn't do much of anything with the login form. It deals with the WP-Members registration form, removing username as a field to fill out and filling it automatically with the email entered.
 
 == Installation ==
 
 1. Make sure the WP-Members plugin is installed and activated
 1. Turn the WordPress native Registration off (users can still register through WP-Members)
-1. Upload the `/ntm-wpmem-email-as-username` folder to the `/wp-content/plugins/` directory
+1. Upload the `/email-as-username-wpmem` folder to the `/wp-content/plugins/` directory
 1. Activate the plugin through the 'Plugins' menu in WordPress
 
 == Frequently Asked Questions ==

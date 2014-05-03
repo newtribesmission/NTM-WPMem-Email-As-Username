@@ -1,9 +1,9 @@
-NTM-WPMem-Email-As-Username
-===========================
+Email As Username for WPMembers
+===============================
 
 WordPress plugin
-Plugin Name: NTM WP-Members Email to Username
-Description: Removes the need to create a username (if wp-members is in use). Changes or removes appropriate items from forms, and adds the email address as the username. If WP-Members is no longer in use, there are plenty of plugins that offer this capability for WP's native registration and login functions
+Plugin Name: Email as Username for WP-Members
+Description: Requires WP-Members to be in use. Uses members' emails as their usernames. Removes the need to create a username (if wp-members is in use). Changes or removes appropriate items from forms, and adds the email address as the username. If WP-Members is no longer in use, there are plenty of plugins that offer this capability for WP's native registration and login functions
 Author: New Tribes Mission (Stephen Narwold)
 
     Copyright (C) 2014 New Tribes Mission
