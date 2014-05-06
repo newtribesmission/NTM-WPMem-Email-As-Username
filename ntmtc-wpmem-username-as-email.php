@@ -26,7 +26,7 @@ Version: 1.1
 /****       Login         ****/
 /*****************************/
 //No real crucial changes here, since it's all done at registration. This is just to remind them to use their email address to log in
-function ntmtc_wpmem_login_username_to_email($inputs) {
+function ntmeau_wpmem_login_username_to_email($inputs) {
 	//change the name of the username field to "Email" on the login form
 	if ($inputs[0]['tag'] == 'log') {
 		$inputs[0]['name'] = 'Email (Use your mission email address if applicable)';
@@ -34,13 +34,13 @@ function ntmtc_wpmem_login_username_to_email($inputs) {
 	return $inputs;
 }
 //WP-Members Filter on the array of input fields for the login form
-add_filter('wpmem_inc_login_inputs', 'ntmtc_wpmem_login_username_to_email');
+add_filter('wpmem_inc_login_inputs', 'ntmeau_wpmem_login_username_to_email');
 
 
 /*****************************/
 /****  Password Reset     ****/
 /*****************************/
-function ntmtc_wpmem_pwd_reset_with_email_only($arr) {
+function ntmeau_wpmem_pwd_reset_with_email_only($arr) {
 	//Allow a password reset to be initiated without a username
 	if (!isset($arr['user']) || $arr['user'] == '') {
 		//If no username is given, assume the username is the same as the email
@@ -49,9 +49,9 @@ function ntmtc_wpmem_pwd_reset_with_email_only($arr) {
 	return $arr;
 }
 //WP-Members Filter on the arguments from a password reset request
-add_filter('wpmem_pwdreset_args', 'ntmtc_wpmem_pwd_reset_with_email_only');
+add_filter('wpmem_pwdreset_args', 'ntmeau_wpmem_pwd_reset_with_email_only');
 
-function ntmtc_wpmem_pwd_reset_form_remove_user_field($inputs) {
+function ntmeau_wpmem_pwd_reset_form_remove_user_field($inputs) {
 	//Removes Username field from the "Reset Password" form
 	if ($inputs[0]['tag'] == 'user') {
 		$inputs[0] = $inputs[1];
@@ -60,13 +60,13 @@ function ntmtc_wpmem_pwd_reset_form_remove_user_field($inputs) {
 	return $inputs;
 }
 //WP-Members Filter on the array of input fields for the password reset form
-add_filter('wpmem_inc_resetpassword_inputs', 'ntmtc_wpmem_pwd_reset_form_remove_user_field');
+add_filter('wpmem_inc_resetpassword_inputs', 'ntmeau_wpmem_pwd_reset_form_remove_user_field');
 
 
 /*****************************/
 /**** Registration/Update ****/
 /*****************************/
-function ntmtc_e2u_wpmem_reg_form($rows, $toggle) {
+function ntmeau_e2u_wpmem_reg_form($rows, $toggle) {
 	//Edit the registration form
 	if (isset($rows['username'])) {
 		//Remove username field from the registration form
@@ -79,10 +79,10 @@ function ntmtc_e2u_wpmem_reg_form($rows, $toggle) {
 	return $rows;
 }
 //WP-Members Filter on the array of input fields for the registration form
-add_filter('wpmem_register_form_rows', 'ntmtc_e2u_wpmem_reg_form');
+add_filter('wpmem_register_form_rows', 'ntmeau_e2u_wpmem_reg_form');
 
 
-function ntmtc_fill_user_with_email($fields) { 
+function ntmeau_fill_user_with_email($fields) { 
 	//Fill in the missing username field with the user's email, and protect email address from change
 	
 	if (is_user_logged_in()) {
@@ -99,16 +99,16 @@ function ntmtc_fill_user_with_email($fields) {
 	return $fields;
 }
 //WP-Members Filter for registration and update data before WP-Mem's validation
-add_filter( 'wpmem_pre_validate_form', 'ntmtc_fill_user_with_email' );
+add_filter( 'wpmem_pre_validate_form', 'ntmeau_fill_user_with_email' );
 
 
 /*****************************/
 /**** User Self-Delete    ****/
 /*****************************/
 //Allow subscribers to delete their own users (this would be the only way to change their email address)
-function ntmtc_remove_logged_in_user() { 
+function ntmeau_remove_logged_in_user() { 
 	//First, make sure user is logged in and only a subscriber (protects admins from deleting themselves in testing)
-	if (is_user_logged_in() && !current_user_can('edit_posts') && $_POST['ntmtc-delete-account'] == 'DELETE MY ACCOUNT') {
+	if (is_user_logged_in() && !current_user_can('edit_posts') && $_POST['ntmeau-delete-account'] == 'DELETE MY ACCOUNT') {
 		require_once(ABSPATH.'wp-admin/includes/user.php' );
 		$current_user = wp_get_current_user();
 		wp_delete_user( $current_user->ID );
@@ -116,9 +116,9 @@ function ntmtc_remove_logged_in_user() {
 		//Once deleted, send them to the Missionary Services homepage
 	}
 }
-add_action('init', 'ntmtc_remove_logged_in_user');
+add_action('init', 'ntmeau_remove_logged_in_user');
 
-function ntmtc_block_admin_pages_for_subscribers() {
+function ntmeau_block_admin_pages_for_subscribers() {
 	//Don't allow subscriber-level users (non-admins) to access the admin area or admin bar
 	if (!current_user_can('edit_posts')) {
 		//For anyone who can't edit posts:
@@ -130,6 +130,6 @@ function ntmtc_block_admin_pages_for_subscribers() {
 		}
 	}
 }
-add_action('init','ntmtc_block_admin_pages_for_subscribers',0);
+add_action('init','ntmeau_block_admin_pages_for_subscribers',0);
 
 ?>
