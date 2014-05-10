@@ -43,15 +43,18 @@ if [ "$NEWVERSION1" != "$NEWVERSION2" ]; then echo "Versions don't match. Exitin
 echo "Versions match in readme.txt and PHP file. Let's proceed..."
 
 echo 
-echo "Creating local copy of SVN repo ..."
+echo "Creating local copy of SVN repo to check version ..."
 svn co $SVNURL $SVNPATH
 
 if [ -d "$SVNPATH/tags/$NEWVERSION1/" ]; then
   echo "Version $NEWVERSION1 has already been committed at $SVNURL. Bump the version numbers in readme.txt and $MAINFILE. Exiting..."; exit 1;
 fi
 
+echo "Version has not previously been committed. Removing temporary directory $SVNPATH for git commit"
+rm -fr $SVNPATH/
+
 cd $GITPATH
-echo -e "Enter a commit message for this new version: \c"
+echo -e "Enter a commit message for version $NEWVERSION1: \c"
 read COMMITMSG
 git commit -am "$COMMITMSG"
 
@@ -62,7 +65,9 @@ echo "Pushing latest commit to origin, with tags"
 git push origin master
 git push origin master --tags
 
-
+echo 
+echo "Creating local copy of SVN repo to work with ..."
+svn co $SVNURL $SVNPATH
 
 echo "Ignoring github specific files and deployment script"
 svn propset svn:ignore "deploy.sh
