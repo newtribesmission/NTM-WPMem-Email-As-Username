@@ -29,7 +29,7 @@ echo ".........................................."
 echo 
 
 #prompt for WP User
-echo -e "WordPress.org User (Must be listed as contributor on WordPress SVN: \c"
+echo -e "WordPress.org User (Must be listed as contributor on WordPress SVN): \c"
 read SVNUSER
 
 # Check version in readme.txt is the same as plugin file
@@ -38,9 +38,17 @@ echo "readme version: $NEWVERSION1"
 NEWVERSION2=`grep "^Version" $GITPATH/$MAINFILE | awk -F' ' '{print $2}'`
 echo "$MAINFILE version: $NEWVERSION2"
 
-if [ "$NEWVERSION1" != "$NEWVERSION2" ]; then echo "Versions don't match. Exiting...."; exit 1; fi
+if [ "$NEWVERSION1" != "$NEWVERSION2" ]; then echo "Versions don't match. Exiting..."; exit 1; fi
 
 echo "Versions match in readme.txt and PHP file. Let's proceed..."
+
+echo 
+echo "Creating local copy of SVN repo ..."
+svn co $SVNURL $SVNPATH
+
+if [ -d "$SVNPATH/tags/$NEWVERSION1/" ]; then
+  echo "Version $NEWVERSION1 has already been committed at $SVNURL. Bump the version numbers in readme.txt and $MAINFILE. Exiting..."; exit 1;
+fi
 
 cd $GITPATH
 echo -e "Enter a commit message for this new version: \c"
@@ -54,9 +62,7 @@ echo "Pushing latest commit to origin, with tags"
 git push origin master
 git push origin master --tags
 
-echo 
-echo "Creating local copy of SVN repo ..."
-svn co $SVNURL $SVNPATH
+
 
 echo "Ignoring github specific files and deployment script"
 svn propset svn:ignore "deploy.sh
