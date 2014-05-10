@@ -17,7 +17,7 @@ GITPATH="$CURRENTDIR/" # this file should be in the base of your git repository
 
 # svn config
 SVNPATH="/tmp/$PLUGINSLUG" # path to a temp SVN repo. No trailing slash required and don't add trunk.
-SVNURL="http://plugins.svn.wordpress.org/$PLUGINSLUG/" # Remote SVN repo on WordPress.org, with no trailing slash
+SVNURL="https://plugins.svn.wordpress.org/$PLUGINSLUG/" # Remote SVN repo on WordPress.org, with no trailing slash
 
 
 # Let's begin...
@@ -47,7 +47,9 @@ echo "Creating local copy of SVN repo to check version ..."
 svn co $SVNURL $SVNPATH
 
 if [ -d "$SVNPATH/tags/$NEWVERSION1/" ]; then
-  echo "Version $NEWVERSION1 has already been committed at $SVNURL. Bump the version numbers in readme.txt and $MAINFILE. Exiting..."; exit 1;
+  echo "Version $NEWVERSION1 has already been committed at $SVNURL. Bump the version numbers in readme.txt and $MAINFILE. Removing Temp Directory..."
+  rm -fr $SVNPATH/
+  echo "Exiting..."; exit 1;
 fi
 
 echo "Version has not previously been committed. Removing temporary directory $SVNPATH for git commit"

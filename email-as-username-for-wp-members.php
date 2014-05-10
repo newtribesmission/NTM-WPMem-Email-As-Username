@@ -4,7 +4,7 @@ Plugin Name: Email as Username for WP-Members
 Description: Requires WP-Members to be in use. Uses members' emails as their usernames. Removes the need to create a username (if wp-members is in use). Changes or removes appropriate items from forms, and adds the email address as the username. If WP-Members is no longer in use, there are plenty of plugins that offer this capability for WP's native registration and login functions
 Author: New Tribes Mission (Stephen Narwold)
 Plugin URI: https://github.com/newtribesmission/NTM-WPMem-Email-As-Username
-Version: 1.1
+Version: 1.2
 
     Copyright (C) 2014  New Tribes Mission
 
@@ -26,7 +26,25 @@ Version: 1.1
 /*****************************/
 /****       Login         ****/
 /*****************************/
-//No real crucial changes here, since it's all done at registration. This is just to remind them to use their email address to log in
+
+//If an email address is entered in the username box, then look up the matching username and authenticate as per normal, using that.
+function ntmeau_email_login_authenticate( $user, $username, $password ) {
+	if ( is_a( $user, 'WP_User' ) )
+		return $user;
+
+	if ( !empty( $username ) ) {
+		$username = str_replace( '&', '&amp;', stripslashes( $username ) );
+		$user = get_user_by( 'email', $username );
+		if ( isset( $user, $user->user_login, $user->user_status ) && 0 == (int) $user->user_status )
+			$username = $user->user_login;
+	}
+
+	return wp_authenticate_username_password( null, $username, $password );
+}
+remove_filter( 'authenticate', 'wp_authenticate_username_password', 20, 3 );
+add_filter( 'authenticate', 'ntmeau_email_login_authenticate', 20, 3 );
+
+//This is just to remind them to use their email address to log in
 function ntmeau_wpmem_login_username_to_email($inputs) {
 	//change the name of the username field to "Email" on the login form
 	if ($inputs[0]['tag'] == 'log') {
