@@ -78,6 +78,8 @@ README.md
 .gitignore" "$SVNPATH/trunk/"
 
 #export git -> SVN
+echo "Deleting old files in Trunk"
+rm -fr $SVNPATH/trunk/*
 echo "Exporting the HEAD of master from git to the trunk of SVN"
 git checkout-index -a -f --prefix=$SVNPATH/trunk/
 
