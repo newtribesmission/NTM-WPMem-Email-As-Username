@@ -18,6 +18,7 @@ Requires WP-Members to be in use. Uses members' emails as their usernames. Remov
 This plugin doesn't do much of anything with the login form. It deals with the WP-Members registration form, removing username as a field to fill out and filling it automatically with the email entered. For backward compatibility (for users that were created before this plugin was installed), the plugin will try looking up the username by email if they log in with that instead of their username.
 
 The plugin also does some funky things with subscribers:
+
 1. It doesn't allow them access to the dashboard. This is to keep them from changing their email address (and un-syncing their username/email)
 1. It turns off the admin bar for them. Let's face it, they don't need that anyways.
 
