@@ -105,6 +105,7 @@ cd $SVNPATH/tags/$NEWVERSION1
 svn commit --username=$SVNUSER -m "Tagging version $NEWVERSION1"
 
 echo "Removing temporary directory $SVNPATH"
+cd $GITPATH
 rm -fr $SVNPATH/
 
 echo "*** FIN ***"
