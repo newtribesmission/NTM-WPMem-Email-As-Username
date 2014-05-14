@@ -4,7 +4,7 @@ Donate link: http://ntm.org/give
 Tags: email as username, users
 Requires at least: 3.5
 Tested up to: 3.9
-Stable tag: 1.2
+Stable tag: 1.2.1
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -38,6 +38,9 @@ Props to [Beau Lebens](http://dentedreality.com.au/) for his [Email Login](http:
 I highly doubt it. This plugin does not attempt to control the native WordPress registration
 
 == Changelog ==
+
+= 1.2.1 =
+* Fix password reset for when username != email
 
 = 1.2 =
 * Add ability to login with email even if username is different (Thanks to [Beau Lebens](http://dentedreality.com.au/))
