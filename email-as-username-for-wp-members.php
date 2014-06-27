@@ -97,7 +97,7 @@ add_filter('wpmem_inc_resetpassword_inputs', 'ntmeau_wpmem_pwd_reset_form_remove
 /*****************************/
 /**** Registration/Update ****/
 /*****************************/
-function ntmeau_e2u_wpmem_reg_form($rows, $toggle) {
+function ntmeau_e2u_wpmem_reg_form($rows, $toggle = false) {
 	//Edit the registration form
 	if (isset($rows['username'])) {
 		//Remove username field from the registration form
