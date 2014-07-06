@@ -24,6 +24,21 @@ Version: 1.2.2
 */
 
 /*****************************/
+/****     Variables       ****/
+/*****************************/
+//If you need some customization, change these variables.
+//You'll need to re-change them if you update the plugin, but it's better than nothing
+
+//Replace "Username" with the following on the login form
+$ntmeau_login_field_name = 'Email (Use your mission email address if applicable)';
+
+//Where to send them after they delete their own user (registration page would be best)
+$ntmeau_redirect_on_delete = '/missionary-services';
+
+//Where to send them if they try to access the admin pages as subscribers
+$ntmeau_redirect_on_admin_denial = '/missionary-services/profile';
+
+/*****************************/
 /****       Login         ****/
 /*****************************/
 
@@ -48,7 +63,8 @@ add_filter( 'authenticate', 'ntmeau_email_login_authenticate', 20, 3 );
 function ntmeau_wpmem_login_username_to_email($inputs) {
 	//change the name of the username field to "Email" on the login form
 	if ($inputs[0]['tag'] == 'log') {
-		$inputs[0]['name'] = 'Email (Use your mission email address if applicable)';
+		//$ntmeau_login_field_name is defined at the top of this file
+		$inputs[0]['name'] = $ntmeau_login_field_name;
 	}
 	return $inputs;
 }
@@ -143,7 +159,8 @@ function ntmeau_remove_logged_in_user() {
 		require_once(ABSPATH.'wp-admin/includes/user.php' );
 		$current_user = wp_get_current_user();
 		wp_delete_user( $current_user->ID );
-		wp_redirect('/missionary-services',302);
+		//$ntmeau_redirect_on_delete is defined at the top of this file
+		wp_redirect($ntmeau_redirect_on_delete,302);
 		//Once deleted, send them to the Missionary Services homepage
 	}
 }
@@ -157,7 +174,8 @@ function ntmeau_block_admin_pages_for_subscribers() {
 		show_admin_bar(false);
 		if (is_admin()) {
 			//If they're accessing an admin page, redirect to the profile page
-			wp_redirect("/missionary-services/profile",302);
+			//$ntmeau_redirect_on_admin_denial is defined at the top of this file
+			wp_redirect($ntmeau_redirect_on_admin_denial,302);
 		}
 	}
 }
