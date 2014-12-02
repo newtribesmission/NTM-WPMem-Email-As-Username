@@ -23,18 +23,6 @@ Version: 1.2.2
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-/*****************************/
-/****     Variables       ****/
-/*****************************/
-//If you need some customization, change these variables.
-//You'll need to re-change them if you update the plugin, but it's better than nothing
-
-//Where to send them after they delete their own user (registration page would be best)
-$ntmeau_redirect_on_delete = '/missionary-services';
-
-//Where to send them if they try to access the admin pages as subscribers
-$ntmeau_redirect_on_admin_denial = '/missionary-services/profile';
-
 /**
  * Plugin init
  * @package ntmeau
@@ -213,9 +201,13 @@ function ntmeau_remove_logged_in_user() {
 		require_once( ABSPATH . 'wp-admin/includes/user.php' );
 		$current_user = wp_get_current_user();
 		wp_delete_user( $current_user->ID );
-		// $ntmeau_redirect_on_delete is defined at the top of this file
-		wp_redirect( $ntmeau_redirect_on_delete, 302 );
-		// Once deleted, send them to the Missionary Services homepage
+
+		// Once deleted, send them to the configured page
+		$options = get_option( 'ntmeau_settings' );
+		if ( $options['redirect_on_delete'] ) {
+			$options['redirect_on_delete'] = apply_filters( 'ntmeau_redirect_on_delete', '/' );
+		}
+		wp_redirect( $options['redirect_on_delete'], 302 );
 	}
 }
 
@@ -231,10 +223,118 @@ function ntmeau_block_admin_pages_for_subscribers() {
 		show_admin_bar( false );
 		if ( is_admin() ) {
 			// If they're accessing an admin page, redirect to the profile page
-			// $ntmeau_redirect_on_admin_denial is defined at the top of this file
-			wp_redirect( $ntmeau_redirect_on_admin_denial, 302 );
+			$options = get_option( 'ntmeau_settings' );
+			if ( $options['redirect_on_admin_denial'] ) {
+				$options['redirect_on_admin_denial'] = apply_filters( 'ntmeau_redirect_on_admin_denial', '/' );
+			}
+			wp_redirect( $options['redirect_on_admin_denial'], 302 );
 		}
 	}
 }
 
 add_action( 'init', 'ntmeau_block_admin_pages_for_subscribers', 0 );
+
+/**
+ * Add admin menu
+ */
+function ntmeau_add_admin_menu() {
+	add_options_page(
+		__( 'Email as Username for WP-Members', 'ntmeau' ),
+		__( 'Email as Username for WP-Members', 'ntmeau' ),
+		'manage_options',
+		'email_as_username_for_wp-members',
+		'ntmeau_options_page'
+	);
+}
+
+add_action( 'admin_menu', 'ntmeau_add_admin_menu' );
+
+/**
+ * Settings init
+ */
+function ntmeau_settings_init() {
+	register_setting( 'pluginPage', 'ntmeau_settings' );
+
+	add_settings_section(
+		'ntmeau_pluginPage_section',
+		__( 'Redirects', 'ntmeau' ),
+		'ntmeau_settings_section_callback',
+		'pluginPage'
+	);
+
+	add_settings_field(
+		'ntmeau_text_field_0',
+		__( 'Redirect on delete', 'ntmeau' ),
+		'ntmeau_text_field_0_render',
+		'pluginPage',
+		'ntmeau_pluginPage_section'
+	);
+
+	add_settings_field(
+		'ntmeau_text_field_1',
+		__( 'Redirect on admin denial', 'ntmeau' ),
+		'ntmeau_text_field_1_render',
+		'pluginPage',
+		'ntmeau_pluginPage_section'
+	);
+
+
+}
+
+add_action( 'admin_init', 'ntmeau_settings_init' );
+
+/**
+ * Callback for Text field 0
+ */
+function ntmeau_text_field_0_render() {
+	$options = get_option( 'ntmeau_settings' );
+	if ( empty( $options['redirect_on_delete'] ) ) {
+		$options['redirect_on_delete'] = '/';
+	}
+
+	?>
+	<input id="redirect_on_delete" type="text" name="ntmeau_settings[redirect_on_delete]" value="<?php echo $options['redirect_on_delete']; ?>">
+	<?php
+}
+
+/**
+ * Callback for Text field 1
+ */
+function ntmeau_text_field_1_render() {
+	$options = get_option( 'ntmeau_settings' );
+	if ( empty( $options['redirect_on_admin_denial'] ) ) {
+		$options['redirect_on_admin_denial'] = '/';
+	}
+
+	?>
+	<input id="redirect_on_admin_denial" type="text" name="ntmeau_settings[redirect_on_admin_denial]" value="<?php echo $options['redirect_on_admin_denial']; ?>">
+	<?php
+}
+
+/**
+ * Settings Section Callback
+ */
+function ntmeau_settings_section_callback() {
+	echo __( 'Where to send the users', 'ntmeau' );
+}
+
+/**
+ * Options Page
+ */
+function ntmeau_options_page() {
+
+	?>
+	<form action='options.php' method='post'>
+
+		<h2><?php _e( 'Email as Username for WP-Members', 'ntmeau' ); ?></h2>
+		<?php
+
+		settings_fields( 'pluginPage' );
+		do_settings_sections( 'pluginPage' );
+		submit_button();
+
+		?>
+	</form>
+<?php
+
+}
