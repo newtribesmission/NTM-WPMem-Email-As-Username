@@ -29,14 +29,20 @@ Version: 1.2.2
 //If you need some customization, change these variables.
 //You'll need to re-change them if you update the plugin, but it's better than nothing
 
-//Replace "Username" with the following on the login form
-$ntmeau_login_field_name = 'Email (Use your mission email address if applicable)';
-
 //Where to send them after they delete their own user (registration page would be best)
 $ntmeau_redirect_on_delete = '/missionary-services';
 
 //Where to send them if they try to access the admin pages as subscribers
 $ntmeau_redirect_on_admin_denial = '/missionary-services/profile';
+
+/**
+ * Plugin init
+ * @package ntmeau
+ */
+function ntmeau_plugin_init() {
+	load_plugin_textdomain( 'ntmeau', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
+}
+add_action( 'init', 'ntmeau_plugin_init' );
 
 /*****************************/
 /****       Login         ****/
@@ -64,7 +70,7 @@ function ntmeau_wpmem_login_username_to_email($inputs) {
 	//change the name of the username field to "Email" on the login form
 	if ($inputs[0]['tag'] == 'log') {
 		//$ntmeau_login_field_name is defined at the top of this file
-		$inputs[0]['name'] = $ntmeau_login_field_name;
+		$inputs[0]['name'] = __( 'Email (Use your mission email address if applicable)', 'ntmeau' );
 	}
 	return $inputs;
 }
