@@ -4,7 +4,7 @@ Donate link: http://ntm.org/give
 Tags: email as username, users
 Requires at least: 3.5
 Tested up to: 3.9
-Stable tag: 1.2.2
+Stable tag: 1.3
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -38,6 +38,11 @@ Props to [Beau Lebens](http://dentedreality.com.au/) for his [Email Login](http:
 I highly doubt it. This plugin does not attempt to control the native WordPress registration
 
 == Changelog ==
+
+= 1.3 =
+* Add internationalization (Italian Language Files)
+* Add options page
+* General WP coding standard compliance
 
 = 1.2.2 =
 * Fix argument missing error
