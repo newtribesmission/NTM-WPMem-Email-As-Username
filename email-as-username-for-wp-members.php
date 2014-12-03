@@ -253,7 +253,7 @@ add_action( 'admin_menu', 'ntmeau_add_admin_menu' );
  * Settings init
  */
 function ntmeau_settings_init() {
-	register_setting( 'pluginPage', 'ntmeau_settings' );
+	register_setting( 'pluginPage', 'ntmeau_settings', 'ntmeau_sanitize_pluginPage' );
 
 	add_settings_section(
 		'ntmeau_pluginPage_section',
@@ -316,6 +316,20 @@ function ntmeau_text_field_1_render() {
  */
 function ntmeau_settings_section_callback() {
 	echo __( 'Where to send the users', 'ntmeau' );
+}
+
+/**
+ * Settings Section Callback
+ */
+function ntmeau_sanitize_pluginPage( $in_array ) {
+	if ( is_array( $in_array ) || is_object( $in_array ) ) {
+		foreach( $in_array as $k => $v ) {
+			$out_array[ $k ] = esc_url( $v );
+		}
+		return $out_array;
+	} else {
+		return esc_url( $in_array );
+	}
 }
 
 /**
