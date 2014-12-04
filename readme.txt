@@ -3,7 +3,7 @@ Contributors: stevish
 Donate link: http://ntm.org/give
 Tags: email as username, users
 Requires at least: 3.5
-Tested up to: 3.9
+Tested up to: 4.0.1
 Stable tag: 1.3
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -57,6 +57,9 @@ I highly doubt it. This plugin does not attempt to control the native WordPress 
 * Initial Release
 
 == Upgrade Notice ==
+
+= 1.3 =
+NOTICE: Custom variables are removed and an options page is used instead. You will need to navigate to the options page to reset the two redirects. If you've customized the login field name, you will need to re-make that customization in a language file.
 
 = 1.2 =
 New version allows for backward compatibility... if username and email don't match, user can still log in with their emails.
