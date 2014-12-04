@@ -43,6 +43,7 @@ I highly doubt it. This plugin does not attempt to control the native WordPress 
 * Add internationalization (Italian Language Files)
 * Add options page
 * General WP coding standard compliance
+* Thanks to [realloc](https://profiles.wordpress.org/realloc) for all these additions and changes
 
 = 1.2.2 =
 * Fix argument missing error
